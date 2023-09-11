@@ -15,6 +15,13 @@
 @color-very-light-gray: hsl(228, 33%, 97%);
 @color-white: hsl(0, 0%, 100%);
 
+// google font
+@ff: 'Rubik', sans-serif;
+
+@fw-regular: 400;
+@fw-medium: 500;
+@fw-bold: 700;
+
 /*
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
@@ -42,6 +49,20 @@ p, h1, h2, h3, h4, h5, h6 {
 
 h1, h2, h3{
   line-height: 1;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  
+  font-family: @ff;
+  font-size: 1rem;
+  background-color: @color-white;
+
+  display: grid;
+  place-content: center;
+  height: 100vh;
+  margin: 0;
 }
 
 
