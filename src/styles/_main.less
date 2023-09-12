@@ -26,46 +26,277 @@
   Josh's Custom CSS Reset
   https://www.joshwcomeau.com/css/custom-css-reset/
 */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
+
 * {
   margin: 0;
 }
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-img, picture, video, canvas, svg {
+
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
-input, button, textarea, select {
+
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
-p, h1, h2, h3, h4, h5, h6 {
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
-h1, h2, h3{
+h1,
+h2,
+h3 {
   line-height: 1;
 }
 
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  
+
   font-family: @ff;
   font-size: 1rem;
   background-color: @color-white;
-
-  display: grid;
-  place-content: center;
-  height: 100vh;
-  margin: 0;
 }
 
 
 h1 {
   color: @color-moderate-blue;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.avatar {
+  width: 2rem;
+}
+
+.score {
+  display: flex;
+  width: 6.25rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 0.625rem;
+  background-color: @color-very-light-gray ;
+}
+
+.add-btn {
+  background: url('src/assets/images/icon-plus.svg') no-repeat;
+  width: 14px;
+  height: 14px;
+  background-position: center;
+}
+
+.minus-btn {
+  background: url('src/assets/images/icon-minus.svg') no-repeat;
+  width: 14px;
+  height: 14px;
+  background-position: center;
+}
+
+.delete-btn {}
+
+.comment-section {
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  button {
+    border: none;
+  }
+
+  .comment {
+    display: grid;
+    grid-template-areas:
+      'author author'
+      'content content'
+      'score action'
+      'reply reply';
+    row-gap: 1rem;
+    padding: 1rem;
+
+    &.no-reply {
+      grid-template-areas:
+      'author author'
+      'content content'
+      'score action';
+    }
+
+    .author {
+      grid-area: author;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      .name {
+        font-weight: 500;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+
+        .you-tag {
+          width: 2.25rem;
+          height: 1.1875rem;
+          border-radius: 2px;
+          text-align: center;
+
+          font-size: 13px;
+          font-weight: @fw-medium;
+          color: @color-white;
+          background-color: @color-moderate-blue;
+        }
+      }
+
+      .timestamps {
+        color: @color-grayish-blue  ;
+      }
+    }
+
+    .content {
+      grid-area: content;
+    }
+
+    .score {
+      grid-area: score;
+      display: flex;
+      gap: 0.625rem;
+      align-items: center;
+      justify-content: center;
+
+      font-weight: @fw-medium;
+      color: @color-moderate-blue;
+
+      button {
+        border: none;
+      }
+    }
+
+    .action {
+      grid-area: action;
+      justify-self: end;
+      align-self: center;
+
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      font-weight: @fw-medium;
+
+      i {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background-position: center;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0;
+      }
+
+      .reply-btn {
+        width: fit-content;
+        color: @color-moderate-blue;
+
+        .reply-icon {
+          background-image: url('src/assets/images/icon-reply.svg');
+        }
+      }
+
+      .delete-btn {
+        color: @color-soft-red;
+
+        .delete-icon {
+          background-image: url('src/assets/images/icon-delete.svg');
+        }
+      }
+
+      .edit-btn {
+        color: @color-moderate-blue;
+
+        .edit-icon {
+          background-image: url('src/assets/images/icon-edit.svg');
+        }
+      }
+    }
+
+    .reply {
+      grid-area: reply;
+      display: flex;
+      gap: 1rem;
+
+      .line {
+        display: block;
+        height: 100%;
+        width: 2px;
+        background-color: @color-light-gray;
+      }
+
+      .comment {
+        padding-right: 0;
+      }
+    }
+  }
+
+  .compose {
+    display: grid;
+    grid-template-areas:
+      'comment comment'
+      'avatar button';
+    grid-template-rows: 6rem auto;
+    gap: 1rem;
+    padding: 1rem;
+
+    textarea {
+      grid-area: comment;
+      padding: 0.75rem 1.5rem;
+      border: none;
+
+      &::placeholder {
+        color: @color-grayish-blue;
+      }
+    }
+
+    button {
+      grid-area: button;
+      justify-self: end;
+      color: @color-white;
+      background-color: @color-moderate-blue;
+
+      padding: 0.75rem 1.875rem;
+      border-radius: 0.5rem;
+    }
+
+    .avatar {
+      grid-area: avatar;
+      align-self: center;
+    }
+  }
 }

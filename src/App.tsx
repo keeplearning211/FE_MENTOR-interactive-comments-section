@@ -1,11 +1,10 @@
+import CommentsSection from './components/CommentsSection'
 import './styles/_main.less'
 
 function App() {
 
   return (
-    <h1>
-      interactive-comments-section
-    </h1>
+    <CommentsSection />
   )
 }
 
