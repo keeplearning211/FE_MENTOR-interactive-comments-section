@@ -87,8 +87,12 @@ h1 {
   color: @color-moderate-blue;
 }
 
-.icon {
+button {
   cursor: pointer;
+}
+
+textarea {
+  resize: none;
 }
 
 .avatar {
@@ -134,16 +138,33 @@ h1 {
     grid-template-areas:
       'author author'
       'content content'
-      'score action'
-      'reply reply';
+      'score action';
     row-gap: 1rem;
     padding: 1rem;
 
-    &.no-reply {
+    &.has-replies {
       grid-template-areas:
-      'author author'
-      'content content'
-      'score action';
+        'author author'
+        'content content'
+        'score action'
+        'reply reply';
+        
+        &.replying {
+          grid-template-areas:
+            'author author'
+            'content content'
+            'score action'
+            'reply reply'
+            'replying replying';
+        }
+    }
+
+    &.replying {
+      grid-template-areas:
+        'author author'
+        'content content'
+        'score action'
+        'replying replying'
     }
 
     .author {
@@ -172,13 +193,13 @@ h1 {
       }
 
       .timestamps {
-        color: @color-grayish-blue  ;
+        color: @color-grayish-blue ;
       }
     }
 
     .content {
       grid-area: content;
-      
+
       .replying-to {
         color: @color-moderate-blue;
         font-weight: @fw-medium;
@@ -266,6 +287,10 @@ h1 {
         padding-right: 0;
       }
     }
+
+    .compose {
+      grid-area: replying;
+    }
   }
 
   .compose {
@@ -277,13 +302,19 @@ h1 {
     gap: 1rem;
     padding: 1rem;
 
-    textarea {
+    .compose-comment {
       grid-area: comment;
       padding: 0.75rem 1.5rem;
-      border: none;
+      border: 1px solid @color-light-gray;
+      border-radius: 8px;
 
       &::placeholder {
         color: @color-grayish-blue;
+      }
+
+      &:focus-visible {
+        outline: none;
+        border: 1px solid @color-moderate-blue ;
       }
     }
 

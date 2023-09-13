@@ -1,6 +1,6 @@
-import Avatar from '../Avatar'
 import Data from '../../data.json'
 import Comment from '../comment'
+import Compose from '../Compose'
 
 function CommentsSection() {
   const data = Data
@@ -11,13 +11,7 @@ function CommentsSection() {
           <Comment key={comment.id} {...comment} />
         ))
       }
-
-      <div className="compose">
-        <textarea name="compose-comment" placeholder="Add a comment..." />
-        <Avatar username={data.currentUser.username} />
-        <button>Send</button>
-      </div>
-
+      <Compose replying={false} username={data.currentUser.username} />
     </div>
   )
 }

@@ -1,6 +1,8 @@
+import { useRef, useState, useEffect } from 'react';
 import Avatar from '../Avatar';
 import { User } from '../../type';
 import Data from '../../data.json';
+import Compose from '../Compose';
 
 interface CommentProps {
   id: number;
@@ -9,14 +11,40 @@ interface CommentProps {
   score: number;
   user: User
   replies: CommentProps[];
-  replyingTo: string;
+  replyingTo?: string;
+  isReply?: boolean;
+  replyHandler?: () => void;
 }
 
-function Comment({ content, user, score, createdAt, replies, replyingTo = '' }: CommentProps) {
+function Comment({ content, user, score, createdAt, replies, replyingTo = '', isReply, replyHandler }: CommentProps) {
+  const [replying, setReplying] = useState(false)
+
   const { currentUser: { username: currentUser } } = Data
-  const hasReply = replies?.length > 0;
+  const hasReplies = replies?.length > 0;
+
+  const replyClickHandler = () => {
+    if (isReply && replyHandler) return replyHandler()
+    setReplying(true)
+  }
+
+  const outSideComposeClickHandler = (event: Event) => {
+    if (composeRef.current && !(composeRef.current as HTMLDivElement).contains(event.target as HTMLDivElement)) {
+      setReplying(false)
+    }
+  }
+
+  const composeRef = useRef(null)
+  useEffect(() => {
+    document.addEventListener('mousedown', outSideComposeClickHandler)
+
+    return () => {
+      document.removeEventListener('mousedown', outSideComposeClickHandler)
+    }
+  }, [composeRef])
+
+
   return (
-    <div className={`comment ${hasReply ? '' : 'no-reply'}`}>
+    <div className={`comment${hasReplies ? ' has-replies' : ''}${replying ? ' replying' : ''}`}>
       <div className="author">
         <Avatar username={user?.username} />
         <p className="name">
@@ -36,7 +64,7 @@ function Comment({ content, user, score, createdAt, replies, replyingTo = '' }: 
       <div className="action">
         {
           currentUser !== user?.username ?
-            <button className="reply-btn"><i className="reply-icon"></i> Reply</button> :
+            <button className="reply-btn" onClick={replyClickHandler}><i className="reply-icon"></i> Reply</button> :
             <>
               <button className="delete-btn"><i className="delete-icon"></i>Delete</button>
               <button className="edit-btn"><i className="edit-icon"></i>Edit</button>
@@ -44,14 +72,16 @@ function Comment({ content, user, score, createdAt, replies, replyingTo = '' }: 
         }
       </div>
       {
-        hasReply && (
+        hasReplies && (
           <div className="reply">
             <span className="line"></span>
             <div className="comments">
               {
-                replies.map(comment => (
+                replies.map((comment) => (
                   <Comment key={comment.id}
                     {...comment}
+                    isReply={true}
+                    replyHandler={replyClickHandler}
                   />
                 ))
               }
@@ -59,6 +89,7 @@ function Comment({ content, user, score, createdAt, replies, replyingTo = '' }: 
           </div>
         )
       }
+      {replying && <Compose ref={composeRef} replying={replying} username={currentUser} />}
     </div>
   )
 }
