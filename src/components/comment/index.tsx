@@ -20,6 +20,8 @@ interface CommentProps {
 function Comment({ content, user, score, createdAt, replies, replyingTo = '', isReply, replyHandler }: CommentProps) {
   const [replying, setReplying] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isUpdating, setIsUpdating] = useState(false)
+  const [updatingCommentValue, setUpdatingCommentValue] = useState<string>(`${replyingTo ? `@${replyingTo} ` : ''}${content}`)
 
   const { currentUser: { username: currentUser } } = Data
   const hasReplies = replies?.length > 0;
@@ -56,6 +58,14 @@ function Comment({ content, user, score, createdAt, replies, replyingTo = '', is
     setIsModalOpen(true)
   }
 
+  const onUpdatingCommentHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setUpdatingCommentValue(e.target?.value)
+  }
+
+  const updateHandler = () => {
+    setIsUpdating(false)
+  }
+
   return (
     <>
       <div className={`comment${hasReplies ? ' has-replies' : ''}${replying ? ' replying' : ''}`}>
@@ -67,21 +77,33 @@ function Comment({ content, user, score, createdAt, replies, replyingTo = '', is
           </p>
           <p className="timestamps">{createdAt}</p>
         </div>
-        <p className="content">
-          {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
-        </p>
+        {
+          isUpdating ?
+            <textarea
+              className="update-comment"
+              value={updatingCommentValue}
+              onChange={onUpdatingCommentHandler}
+              autoFocus
+            /> :
+            <p className="content">
+              {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
+            </p>
+        }
         <div className="score">
           <button className="add-btn" />
           {score}
           <button className="minus-btn" />
         </div>
-        <div className="action">
+        <div className={`action${isUpdating ? ' isUpdating' : ' hidden'}`}>
+          <button className="update-comment-btn" onClick={updateHandler}>UPDATE</button>
+        </div>
+        <div className={`action${isUpdating ? ' hidden' : ''}`}>
           {
             currentUser !== user?.username ?
               <button className="reply-btn" onClick={replyClickHandler}><i className="reply-icon"></i> Reply</button> :
               <>
                 <button className="delete-btn" onClick={onClickDeleteHandler}><i className="delete-icon"></i>Delete</button>
-                <button className="edit-btn"><i className="edit-icon"></i>Edit</button>
+                <button className="edit-btn" onClick={() => setIsUpdating(!isUpdating)}><i className="edit-icon"></i>Edit</button>
               </>
           }
         </div>

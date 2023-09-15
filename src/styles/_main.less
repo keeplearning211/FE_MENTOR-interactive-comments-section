@@ -93,6 +93,22 @@ button {
 
 textarea {
   resize: none;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid @color-light-gray;
+  border-radius: 8px;
+
+  &::placeholder {
+    color: @color-grayish-blue;
+  }
+
+  &:focus-visible {
+    outline: none;
+    border: 1px solid @color-moderate-blue ;
+  }
+}
+
+.hidden {
+  display: none !important;
 }
 
 .avatar {
@@ -148,15 +164,15 @@ textarea {
         'content content'
         'score action'
         'reply reply';
-        
-        &.replying {
-          grid-template-areas:
-            'author author'
-            'content content'
-            'score action'
-            'reply reply'
-            'replying replying';
-        }
+
+      &.replying {
+        grid-template-areas:
+          'author author'
+          'content content'
+          'score action'
+          'reply reply'
+          'replying replying';
+      }
     }
 
     &.replying {
@@ -204,6 +220,11 @@ textarea {
         color: @color-moderate-blue;
         font-weight: @fw-medium;
       }
+    }
+
+    .update-comment {
+      grid-area: content;
+      height: 6rem;
     }
 
     .score {
@@ -268,6 +289,15 @@ textarea {
         .edit-icon {
           background-image: url('src/assets/images/icon-edit.svg');
         }
+      }
+
+      .update-comment-btn {
+        font-weight: @fw-regular;
+        color: @color-white;
+        background-color: @color-moderate-blue;
+
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
       }
     }
 
@@ -345,6 +375,7 @@ textarea {
   place-content: center;
   background-color: hsla(0, 0%, 0%, 0.5);
   overflow-y: hidden;
+
   &.hidden {
     display: none;
   }
@@ -367,9 +398,9 @@ textarea {
     }
 
     .content {
-      color:@color-grayish-blue;
+      color: @color-grayish-blue;
     }
-    
+
     .action {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -382,7 +413,7 @@ textarea {
         color: @color-white;
         padding: 0.75rem;
         display: grid;
-        
+
         &.delete-confirm-btn {
           background-color: @color-soft-red;
         }
