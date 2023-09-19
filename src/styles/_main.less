@@ -121,7 +121,12 @@ textarea {
   height: 2.5rem;
   flex-shrink: 0;
   border-radius: 0.625rem;
-  background-color: @color-very-light-gray ;
+  background-color: @color-very-light-gray;
+
+  span {
+    overflow: hidden;
+    max-width: 50px;
+  }
 }
 
 .add-btn {
@@ -313,13 +318,16 @@ textarea {
         background-color: @color-light-gray;
       }
 
-      .comment {
-        padding-right: 0;
+      .comments {
+        .comment{
+          padding-right: 0;
+        }
       }
     }
 
     .compose {
       grid-area: replying;
+      padding: 1rem 0;
     }
   }
 
