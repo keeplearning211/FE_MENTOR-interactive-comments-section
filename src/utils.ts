@@ -1,4 +1,30 @@
 import { Comment, CommentSection, User } from './type'
+import { formatDistanceToNow, differenceInDays } from 'date-fns';
+
+export function formatDateToRelativeTime(dateTime: string | undefined): string {
+  try {
+    if (!dateTime) {
+      return 'Date not provided';
+    }
+
+    const now = new Date();
+    const date = new Date(dateTime);
+
+    // Get the distance in days
+    const distanceInDays = differenceInDays(now, date);
+
+    if (distanceInDays >= 7 && distanceInDays <= 29) {
+      // If the distance is 7 days or more, format it as weeks
+      return `${Math.round(distanceInDays / 7)} weeks ago`;
+    } else {
+      // Otherwise, format it as usual
+      return `${formatDistanceToNow(date)} ago`.replace('about', '').trim();
+    }
+  } catch (error) {
+    console.error(error);
+    return 'Invalid date';
+  }
+}
 
 const isObject = (object: unknown): object is object => {
   return Boolean(object && typeof object === 'object');

@@ -4,7 +4,7 @@ import { CommentActionType, User } from '../../type';
 import Compose from '../Compose';
 import DeleteConfirmModal from '../DeleteConfirmModal';
 import { CommentSectionAction } from '../CommentsSection';
-import { getRepLyToFromContent } from '../../utils';
+import { formatDateToRelativeTime, getRepLyToFromContent } from '../../utils';
 
 export interface CommentProps {
   id: string;
@@ -27,6 +27,7 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
   const [updatingCommentValue, setUpdatingCommentValue] = useState<string>(`${replyingTo ? `@${replyingTo} ` : ''}${content}`)
 
   const hasReplies = replies && replies.length > 0;
+  const formattedDate = formatDateToRelativeTime(createdAt)
 
   const handleReplyClick = () => {
     setReplying(true)
@@ -142,7 +143,7 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
             {user?.username}
             {currentUser === user?.username && <span className="you-tag">You</span>}
           </p>
-          <p className="timestamps">{createdAt}</p>
+          <p className="timestamps">{formattedDate}</p>
         </div>
         {
           isUpdating ?

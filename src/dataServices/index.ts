@@ -1,5 +1,5 @@
 import { CommentSection } from './../type';
-import data from '../data.json';
+import data from '../data';
 import { parseCommentSection } from '../utils';
 
 export const COMMENT_SECTION_DATA = 'COMMENT_SECTION_DATA';
