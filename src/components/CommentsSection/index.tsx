@@ -177,7 +177,7 @@ function CommentsSection() {
     currentUser: { username: '' },
     comments: [] as CommentType[],
   })
-  const data: CommentSection = dataServices.getCommentSection()
+  const data: CommentSection | null = dataServices.getCommentSection()
 
   useEffect(() => {
     if (data) {
@@ -191,7 +191,9 @@ function CommentsSection() {
 
   // save the current state of comment section to local storage
   useEffect(() => {
-    localStorage.setItem(COMMENT_SECTION_DATA, JSON.stringify(state));
+    if (state.currentUser.username) {
+      localStorage.setItem(COMMENT_SECTION_DATA, JSON.stringify(state));
+    }
   }, [state])
 
   return (
@@ -200,7 +202,7 @@ function CommentsSection() {
         state?.comments.map(comment => {
           const commentProps: CommentProps = {
             ...comment,
-            currentUser: data.currentUser.username,
+            currentUser: state.currentUser.username,
             dispatch: dispatch,
             isReply: false
           } as CommentProps
@@ -209,7 +211,7 @@ function CommentsSection() {
           )
         })
       }
-      <Compose dispatch={dispatch} replying={false} username={state?.currentUser.username ?? ''} />
+      <Compose dispatch={dispatch} replying={false} username={state.currentUser.username} />
     </div>
   )
 }

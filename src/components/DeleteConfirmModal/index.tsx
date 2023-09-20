@@ -80,8 +80,6 @@ const DeleteConfirmModal = ({ title, message, onConfirm, onClose, isOpen }: Conf
 
 
   const handleClose = () => {
-    console.log('handleClose');
-
     setIsModalOpen(false);
     onClose()
   };

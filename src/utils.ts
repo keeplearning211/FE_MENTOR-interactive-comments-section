@@ -1,23 +1,22 @@
-import { Comment, CommentSection, User } from './type'
+import { Comment, CommentSection, User } from './type';
 import { formatDistanceToNow, differenceInDays } from 'date-fns';
 
+/**
+ * Formats a date to a relative time string.
+ */
 export function formatDateToRelativeTime(dateTime: string | undefined): string {
-  try {
-    if (!dateTime) {
-      return 'Date not provided';
-    }
+  if (!dateTime) {
+    return 'Date not provided';
+  }
 
+  try {
     const now = new Date();
     const date = new Date(dateTime);
-
-    // Get the distance in days
     const distanceInDays = differenceInDays(now, date);
 
     if (distanceInDays >= 7 && distanceInDays <= 29) {
-      // If the distance is 7 days or more, format it as weeks
       return `${Math.round(distanceInDays / 7)} weeks ago`;
     } else {
-      // Otherwise, format it as usual
       return `${formatDistanceToNow(date)} ago`.replace('about', '').trim();
     }
   } catch (error) {
@@ -26,81 +25,76 @@ export function formatDateToRelativeTime(dateTime: string | undefined): string {
   }
 }
 
-const isObject = (object: unknown): object is object => {
-  return Boolean(object && typeof object === 'object');
-};
+/**
+ * Type guards for object and string.
+ */
+const isObject = (object: unknown): object is Record<string, unknown> => typeof object === 'object' && object !== null;
+const isString = (text: unknown): text is string => typeof text === 'string' && text.trim().length !== 0;
 
-const isString = (text: unknown): text is string => {
-  return (typeof text === 'string' || text instanceof String) && text.trim().length !== 0;
-};
-
-export const parseCommentSection = (object: unknown): CommentSection => {
-  if (!isObject(object)) {
-    throw new Error('Incorrect or missing data');
-  }
-
-  if (
-    'currentUser' in object &&
-    'comments' in object
-  ) {
-    const commentSection: CommentSection = {
-      currentUser: object.currentUser as User,
-      comments: (object.comments as Comment[]).map(
-        comment => parseComment(comment)
-      ),
-    };
-    return commentSection
-  }
-  throw new Error('Incorrect data: a field missing');
-}
-
-const parseComment = (object: unknown): Comment => {
-  if (!isObject(object)) {
-    throw new Error('Incorrect or missing data');
-  }
-
-  if (
-    'id' in object &&
-    'content' in object &&
-    'createdAt' in object &&
-    'score' in object &&
-    'user' in object
-  ) {
-    const newComment: Comment = {
-      id: parseStringValue(object.id, 'id'),
-      content: parseStringValue(object.content, 'content'),
-      createdAt: parseStringValue(object.createdAt, 'createdAt'),
-      score: parseScoreValue(object.score),
-      user: object.user as User,
-    };
-    if ('replies' in object) {
-      newComment.replies = (object.replies as Comment[]).map(
-        comment => parseComment(comment)
-      )
-    }
-    if ('replyingTo' in object) {
-      newComment.replyingTo = parseStringValue(object.replyingTo, 'replyingTo')
-    }
-    return newComment
-  }
-  throw new Error('Incorrect data: a field missing');
-}
-
+/**
+ * Parses a value as a string, throwing an error if it's not a string.
+ */
 const parseStringValue = (value: unknown, name: string): string => {
   if (!isString(value)) {
     throw new Error(`Incorrect or missing ${name}`);
   }
-
   return value;
-}
+};
 
+/**
+ * Parses a value as a score, throwing an error if it's not an integer.
+ */
 const parseScoreValue = (value: unknown): number => {
   if (!Number.isInteger(value)) {
     throw new Error('Incorrect or missing score');
   }
-  return parseInt(value as string);
-}
+  return value as number;
+};
 
+/**
+ * Parses an object as a comment, throwing an error if it's missing required fields.
+ */
+const parseComment = (object: unknown): Comment => {
+  if (!isObject(object) || !('id' in object && 'content' in object && 'createdAt' in object && 'score' in object && 'user' in object)) {
+    throw new Error('Incorrect or missing data');
+  }
+
+  const newComment: Comment = {
+    id: parseStringValue(object.id, 'id'),
+    content: parseStringValue(object.content, 'content'),
+    createdAt: parseStringValue(object.createdAt, 'createdAt'),
+    score: parseScoreValue(object.score),
+    user: object.user as User,
+  };
+
+  if ('replies' in object) {
+    newComment.replies = (object.replies as Comment[]).map(parseComment);
+  }
+
+  if ('replyingTo' in object) {
+    newComment.replyingTo = parseStringValue(object.replyingTo, 'replyingTo');
+  }
+
+  return newComment;
+};
+
+/**
+ * Parses an object as a comment section, throwing an error if it's missing required fields.
+ */
+export const parseCommentSection = (object: unknown): CommentSection => {
+  if (!isObject(object) || !('currentUser' in object && 'comments' in object)) {
+    throw new Error('Incorrect or missing data');
+  }
+
+  return {
+    currentUser: object.currentUser as User,
+    comments: (object.comments as Comment[]).map(parseComment),
+  };
+};
+
+/**
+ * Extracts a reply-to username and the rest of the content from a content string.
+ */
 export const getRepLyToFromContent = (content: string): [string | undefined, string] => {
   if (content.startsWith('@')) {
     const firstSpaceIndex = content.indexOf(' ');
@@ -112,4 +106,4 @@ export const getRepLyToFromContent = (content: string): [string | undefined, str
   } else {
     return [undefined, content];
   }
-}
+};
