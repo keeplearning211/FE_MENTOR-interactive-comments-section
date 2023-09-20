@@ -148,7 +148,7 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
 
   return (
     <>
-      <div className={`comment${hasReplies ? ' has-replies' : ''}${replying ? ' replying' : ''}`}>
+      <div className={`comment${hasReplies ? ' has-replies' : ''}${replying ? ' replying' : ''}${isUpdating ? ' updating' : ''}`}>
         <div className="author">
           <Avatar username={user?.username} />
           <p className="name">
@@ -172,6 +172,9 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
               {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
             </p>
         }
+        <div className={`action${isUpdating ? ' isUpdating-desktop' : ' hidden'}`}>
+          <button className="update-comment-btn" onClick={handleUpdate}>UPDATE</button>
+        </div>
         <div className="score">
           <button className="add-btn" onClick={() => handleVote(true)} />
           <span>{score}</span>
@@ -180,7 +183,8 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
         <div className={`action${isUpdating ? ' isUpdating' : ' hidden'}`}>
           <button className="update-comment-btn" onClick={handleUpdate}>UPDATE</button>
         </div>
-        <div className={`action${isUpdating ? ' hidden' : ''}`}>
+
+        <div className={`action${isUpdating ? ' hidden-mobile' : ''}`}>
           {
             currentUser !== user?.username ?
               <button className="reply-btn" onClick={handleReplyClick}><i className="reply-icon"></i> Reply</button> :

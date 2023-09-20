@@ -335,6 +335,14 @@ textarea {
         }
       }
 
+      &.hidden-mobile {
+        display: none;
+      }
+
+      &.isUpdating-desktop {
+        display: none;
+      }
+
       .update-comment-btn {
         font-weight: @fw-regular;
         color: @color-white;
@@ -395,6 +403,7 @@ textarea {
         padding: 0.5rem 1.5rem;
         border: 1px solid @color-light-gray;
         border-radius: 8px;
+        height: 6rem;
 
         &::placeholder {
           color: @color-grayish-blue;
@@ -505,10 +514,6 @@ textarea {
     place-content: center;
   }
 
-  textarea {
-    height: 6rem;
-  }
-
   .comment-section {
     margin-top: 2rem;
     min-height: fit-content;
@@ -545,6 +550,14 @@ textarea {
           'replying replying replying';
       }
 
+      &.updating {
+        grid-template-areas:
+          'score author action'
+          'score content content'
+          'update update update';
+      }
+
+
       .score {
         flex-direction: column;
         width: 2.5rem;
@@ -553,6 +566,19 @@ textarea {
 
       .action {
         gap: 1.5rem;
+        
+        &.hidden-mobile {
+          display: flex;
+        }
+
+        &.isUpdating {
+          display: none;
+        }
+
+        &.isUpdating-desktop {
+          display: block;
+          grid-area: update;
+        }
       }
 
       .reply {
@@ -562,6 +588,12 @@ textarea {
         .comments {
           display: grid;
           gap: 1.5rem;
+        }
+      }
+
+      .update-comment-wrapper {
+        .update-comment {
+          height: 8rem;
         }
       }
   
