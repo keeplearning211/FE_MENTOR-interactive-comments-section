@@ -14,7 +14,9 @@ export function formatDateToRelativeTime(dateTime: string | undefined): string {
     const date = new Date(dateTime);
     const distanceInDays = differenceInDays(now, date);
 
-    if (distanceInDays >= 7 && distanceInDays <= 29) {
+    if (distanceInDays >= 7 && distanceInDays <= 13) {
+      return `${Math.round(distanceInDays / 7)} week ago`;
+    } else if (distanceInDays >= 14 && distanceInDays <= 29) {
       return `${Math.round(distanceInDays / 7)} weeks ago`;
     } else {
       return `${formatDistanceToNow(date)} ago`.replace('about', '').trim();

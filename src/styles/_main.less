@@ -79,6 +79,7 @@ body {
 
   font-family: @ff;
   font-size: 1rem;
+  color: @color-grayish-blue;
   background-color: @color-white;
 }
 
@@ -150,6 +151,7 @@ textarea {
 
 .comment-section {
   padding: 2rem 1rem;
+  max-width: 730px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -190,7 +192,7 @@ textarea {
         'author author'
         'content content'
         'score action'
-        'replying replying'
+        'replying replying';
     }
 
     .author {
@@ -202,6 +204,7 @@ textarea {
 
       .name {
         font-weight: 500;
+        color: @color-dark-blue;
         display: flex;
         gap: 0.5rem;
         align-items: center;
@@ -226,7 +229,7 @@ textarea {
 
     .content {
       grid-area: content;
-      word-break: break-all;
+      overflow: auto;
       overflow-wrap: break-word;
 
       .replying-to {
@@ -234,10 +237,12 @@ textarea {
         font-weight: @fw-medium;
       }
     }
+
     .update-comment-wrapper {
       grid-area: content;
       display: flex;
       flex-direction: column;
+
       .update-comment {
         height: 6rem;
 
@@ -245,13 +250,14 @@ textarea {
           border: 1px solid @color-soft-red
         }
       }
+
       .error-message {
         grid-area: content;
         font-size: 0.75rem;
         color: @color-soft-red;
       }
     }
-    
+
 
     .score {
       grid-area: score;
@@ -384,16 +390,16 @@ textarea {
       grid-area: comment;
       display: flex;
       flex-direction: column;
-      
+
       .compose-comment {
-        padding: 0.75rem 1.5rem;
+        padding: 0.5rem 1.5rem;
         border: 1px solid @color-light-gray;
         border-radius: 8px;
-  
+
         &::placeholder {
           color: @color-grayish-blue;
         }
-  
+
         &:focus-visible {
           outline: none;
           border: 1px solid @color-moderate-blue ;
@@ -405,11 +411,11 @@ textarea {
       }
 
       .error-message {
-       color: @color-soft-red;
-       font-size: 0.75rem; 
+        color: @color-soft-red;
+        font-size: 0.75rem;
       }
     }
-    
+
 
     button {
       grid-area: button;
@@ -420,8 +426,7 @@ textarea {
       padding: 0.75rem 1.875rem;
       border-radius: 0.5rem;
 
-      &:hover,
-      &:focus-visible {
+      &:hover {
         background-color: @color-light-grayish-blue;
       }
     }
@@ -489,6 +494,88 @@ textarea {
         &.cancel-btn {
           background-color: @color-grayish-blue;
         }
+      }
+    }
+  }
+}
+
+@media (min-width: 888px) {
+  body {
+    display: grid;
+    place-content: center;
+  }
+
+  textarea {
+    height: 6rem;
+  }
+
+  .comment-section {
+    margin-top: 2rem;
+    min-height: fit-content;
+    padding: 2rem 0;
+    gap: 1.25rem;
+    
+    .comment {
+      grid-template-areas:
+        'score author action'
+        'score content content';
+      gap: 1rem 1.5rem;
+      padding: 1.5rem;
+      grid-template-columns: 2.5rem auto 10rem;
+
+      &.has-replies {
+        grid-template-areas:
+          'score author action'
+          'score content content'
+          'reply reply reply';
+
+        &.replying {
+          grid-template-areas:
+            'score author action'
+            'score content content'
+            'reply reply reply'
+            'replying replying replying';
+        }
+      }
+
+      &.replying {
+        grid-template-areas:
+          'score author action'
+          'score content content'
+          'replying replying replying';
+      }
+
+      .score {
+        flex-direction: column;
+        width: 2.5rem;
+        height: 6.25rem;
+      }
+
+      .action {
+        gap: 1.5rem;
+      }
+
+      .reply {
+        gap: 4rem;
+        padding-top: 1.5rem;
+
+        .comments {
+          display: grid;
+          gap: 1.5rem;
+        }
+      }
+  
+    }
+
+    .compose {
+      grid-template-areas:
+      'avatar comment button';
+      grid-template-columns: 2.5rem auto 6.5rem;
+      align-items: start;
+      padding: 0 1.5rem;
+      .avatar {
+        width: 2.5rem;
+        align-self: start;
       }
     }
   }
