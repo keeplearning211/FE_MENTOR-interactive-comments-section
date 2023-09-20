@@ -234,11 +234,24 @@ textarea {
         font-weight: @fw-medium;
       }
     }
-
-    .update-comment {
+    .update-comment-wrapper {
       grid-area: content;
-      height: 6rem;
+      display: flex;
+      flex-direction: column;
+      .update-comment {
+        height: 6rem;
+
+        &.error {
+          border: 1px solid @color-soft-red
+        }
+      }
+      .error-message {
+        grid-area: content;
+        font-size: 0.75rem;
+        color: @color-soft-red;
+      }
     }
+    
 
     .score {
       grid-area: score;
@@ -367,21 +380,36 @@ textarea {
     gap: 1rem;
     padding: 1rem;
 
-    .compose-comment {
+    .compose-comment-wrapper {
       grid-area: comment;
-      padding: 0.75rem 1.5rem;
-      border: 1px solid @color-light-gray;
-      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      
+      .compose-comment {
+        padding: 0.75rem 1.5rem;
+        border: 1px solid @color-light-gray;
+        border-radius: 8px;
+  
+        &::placeholder {
+          color: @color-grayish-blue;
+        }
+  
+        &:focus-visible {
+          outline: none;
+          border: 1px solid @color-moderate-blue ;
+        }
 
-      &::placeholder {
-        color: @color-grayish-blue;
+        &.error {
+          border: 1px solid @color-soft-red;
+        }
       }
 
-      &:focus-visible {
-        outline: none;
-        border: 1px solid @color-moderate-blue ;
+      .error-message {
+       color: @color-soft-red;
+       font-size: 0.75rem; 
       }
     }
+    
 
     button {
       grid-area: button;

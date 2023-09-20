@@ -4,7 +4,7 @@ import { CommentActionType, User } from '../../type';
 import Compose from '../Compose';
 import DeleteConfirmModal from '../DeleteConfirmModal';
 import { CommentSectionAction } from '../CommentsSection';
-import { formatDateToRelativeTime, getRepLyToFromContent } from '../../utils';
+import { formatDateToRelativeTime, getRepLyToFromContent, isString } from '../../utils';
 
 export interface CommentProps {
   id: string;
@@ -25,6 +25,8 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState(false)
   const [updatingCommentValue, setUpdatingCommentValue] = useState<string>(`${replyingTo ? `@${replyingTo} ` : ''}${content}`)
+
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   const hasReplies = replies && replies.length > 0;
   const formattedDate = formatDateToRelativeTime(createdAt)
@@ -83,9 +85,13 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
   }
 
   const handleUpdate = () => {
-    setIsUpdating(false)
     if (isReply) {
       const [replyingTo, content] = getRepLyToFromContent(updatingCommentValue)
+      if (!isString(content)) {
+        return setValidationError('What do you want to comment?')
+      }
+      setIsUpdating(false)
+      setValidationError(null)
       return dispatch({
         type: CommentActionType.EDIT,
         payload: {
@@ -99,6 +105,12 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
       })
     }
 
+    if (!isString(updatingCommentValue)) {
+      return setValidationError('What do you want to comment?')
+    }
+
+    setIsUpdating(false)
+    setValidationError(null)
     return dispatch({
       type: CommentActionType.EDIT,
       payload: {
@@ -147,12 +159,15 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
         </div>
         {
           isUpdating ?
-            <textarea
-              className="update-comment"
-              value={updatingCommentValue}
-              onChange={handleUpdatingComment}
-              autoFocus
-            /> :
+            <div className="update-comment-wrapper">
+              <textarea
+                className={`update-comment${validationError ? ' error' : ''}`}
+                value={updatingCommentValue}
+                onChange={handleUpdatingComment}
+                autoFocus
+              />
+              {validationError && <span className="error-message">{validationError}</span>}
+            </div> :
             <p className="content">
               {replyingTo && <span className="replying-to">@{replyingTo}</span>} {content}
             </p>

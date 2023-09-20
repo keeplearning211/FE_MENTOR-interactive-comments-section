@@ -3,7 +3,7 @@ import Avatar from '../Avatar'
 import { CommentActionType, Ref } from '../../type';
 import { CommentSectionAction } from '../CommentsSection';
 import { v1 as uuidv1 } from 'uuid';
-import { getRepLyToFromContent } from '../../utils';
+import { getRepLyToFromContent, isString } from '../../utils';
 
 
 type ComposePros = {
@@ -26,6 +26,7 @@ type ComposePros = {
 
 const Compose = forwardRef<Ref, ComposePros>(function Compose({ username, replying, dispatch, commentId, replyingTo, parentCommentId, setReplying }, ref) {
   const [value, setValue] = useState('')
+  const [validationError, setValidationError] = useState<string | null>(null)
 
   useEffect(() => {
     if (replyingTo) {
@@ -35,14 +36,16 @@ const Compose = forwardRef<Ref, ComposePros>(function Compose({ username, replyi
 
   const onClickHandler = () => {
     if (replying) {
-      replyComment()
-      return setReplying(false)
+      return replyComment()
     }
 
     return sendComment()
   }
 
   const sendComment = () => {
+    if (!isString(value)) {
+      return setValidationError('what do you want to comment?')
+    }
     const newComment = {
       id: uuidv1(),
       content: value,
@@ -50,16 +53,20 @@ const Compose = forwardRef<Ref, ComposePros>(function Compose({ username, replyi
       score: 0,
       replies: []
     }
-
+    setValidationError(null)
     dispatch({
       type: CommentActionType.COMMENT,
       payload: newComment
     })
+
     return setValue('')
   }
 
   const replyComment = () => {
     const [replyingTo, content] = getRepLyToFromContent(value)
+    if (!isString(content)) {
+      return setValidationError('what do you want to comment?')
+    }
     const newReply = {
       id: uuidv1(),
       createdAt: new Date().toISOString(),
@@ -68,17 +75,21 @@ const Compose = forwardRef<Ref, ComposePros>(function Compose({ username, replyi
       replyingTo,
       commentId: parentCommentId ? parentCommentId : commentId!,
     }
-
+    setValidationError(null)
     dispatch({
       type: CommentActionType.REPLY,
       payload: newReply
     })
+    replying && setReplying(false)
     return setValue('')
   }
 
   return (
     <div className="compose" ref={ref}>
-      <textarea className="compose-comment" placeholder="Add a comment..." value={value} onChange={(e) => setValue(e.target.value)} autoFocus={replying} />
+      <div className="compose-comment-wrapper">
+        <textarea className={`compose-comment${validationError ? ' error' : ''}`} placeholder="Add a comment..." value={value} onChange={(e) => setValue(e.target.value)} autoFocus={replying} />
+        {validationError && <span className="error-message">{validationError}</span>}
+      </div>
       <Avatar username={username} />
       <button onClick={onClickHandler}>{replying ? 'REPLY' : 'SEND'}</button>
     </div>

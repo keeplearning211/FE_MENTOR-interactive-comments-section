@@ -29,7 +29,7 @@ export function formatDateToRelativeTime(dateTime: string | undefined): string {
  * Type guards for object and string.
  */
 const isObject = (object: unknown): object is Record<string, unknown> => typeof object === 'object' && object !== null;
-const isString = (text: unknown): text is string => typeof text === 'string' && text.trim().length !== 0;
+export const isString = (text: unknown): text is string => typeof text === 'string' && text.trim().length !== 0;
 
 /**
  * Parses a value as a string, throwing an error if it's not a string.
