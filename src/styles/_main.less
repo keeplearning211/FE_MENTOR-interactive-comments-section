@@ -96,6 +96,7 @@ textarea {
   padding: 0.75rem 1.5rem;
   border: 1px solid @color-light-gray;
   border-radius: 8px;
+  caret-color: @color-moderate-blue;
 
   &::placeholder {
     color: @color-grayish-blue;
@@ -104,6 +105,10 @@ textarea {
   &:focus-visible {
     outline: none;
     border: 1px solid @color-moderate-blue ;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 }
 
@@ -191,6 +196,7 @@ textarea {
     .author {
       grid-area: author;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 1rem;
 
@@ -220,6 +226,8 @@ textarea {
 
     .content {
       grid-area: content;
+      word-break: break-all;
+      overflow-wrap: break-word;
 
       .replying-to {
         color: @color-moderate-blue;
@@ -275,6 +283,10 @@ textarea {
         width: fit-content;
         color: @color-moderate-blue;
 
+        &:hover {
+          opacity: 0.5;
+        }
+
         .reply-icon {
           background-image: url('src/assets/images/icon-reply.svg');
         }
@@ -283,6 +295,10 @@ textarea {
       .delete-btn {
         color: @color-soft-red;
 
+        &:hover {
+          opacity: 0.5;
+        }
+
         .delete-icon {
           background-image: url('src/assets/images/icon-delete.svg');
         }
@@ -290,6 +306,10 @@ textarea {
 
       .edit-btn {
         color: @color-moderate-blue;
+
+        &:hover {
+          opacity: 0.5;
+        }
 
         .edit-icon {
           background-image: url('src/assets/images/icon-edit.svg');
@@ -303,6 +323,10 @@ textarea {
 
         padding: 0.75rem 1.25rem;
         border-radius: 0.5rem;
+
+        &:hover {
+          background-color: @color-light-grayish-blue;
+        }
       }
     }
 
@@ -310,16 +334,19 @@ textarea {
       grid-area: reply;
       display: flex;
       gap: 1rem;
+      @line-width: 2px;
 
       .line {
         display: block;
         height: 100%;
-        width: 2px;
+        width: @line-width;
         background-color: @color-light-gray;
       }
 
       .comments {
-        .comment{
+        width: calc(100% - @line-width);
+
+        .comment {
           padding-right: 0;
         }
       }
@@ -364,6 +391,11 @@ textarea {
 
       padding: 0.75rem 1.875rem;
       border-radius: 0.5rem;
+
+      &:hover,
+      &:focus-visible {
+        background-color: @color-light-grayish-blue;
+      }
     }
 
     .avatar {
