@@ -102,6 +102,7 @@ This project was created by [keeplearning211](https://www.frontendmentor.io/prof
 
 I would like to express my gratitude to:
 
+- [ErickKS](https://github.com/ErickKS) for his [vite-deploy](https://github.com/ErickKS/vite-deploy) repository. It was an invaluable resource during the deployment phase of my project.
 - The [React documentation on useReducer](https://react.dev/reference/react/useReducer), which greatly aided my understanding and implementation of state management in my React components.
 - [TypeScript](https://www.typescriptlang.org/), a superset of JavaScript that adds static types, for enhancing the reliability of my code.
 - [React](https://reactjs.org/), a JS library for building user interfaces, for providing the foundation of my application.
