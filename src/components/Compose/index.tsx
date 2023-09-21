@@ -91,7 +91,7 @@ const Compose = forwardRef<Ref, ComposePros>(function Compose({ username, replyi
         {validationError && <span className="error-message">{validationError}</span>}
       </div>
       <Avatar username={username} />
-      <button onClick={onClickHandler}>{replying ? 'REPLY' : 'SEND'}</button>
+      <button aria-label="send button" onClick={onClickHandler}>{replying ? 'REPLY' : 'SEND'}</button>
     </div>
   )
 })

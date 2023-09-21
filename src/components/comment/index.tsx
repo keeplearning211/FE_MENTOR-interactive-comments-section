@@ -173,24 +173,24 @@ function Comment({ id, parentCommentId, content, user, score, createdAt, replies
             </p>
         }
         <div className={`action${isUpdating ? ' isUpdating-desktop' : ' hidden'}`}>
-          <button className="update-comment-btn" onClick={handleUpdate}>UPDATE</button>
+          <button className="update-comment-btn" onClick={handleUpdate} aria-label="update button">UPDATE</button>
         </div>
         <div className="score">
-          <button className="add-btn" onClick={() => handleVote(true)} />
+          <button aria-label="add button" className="add-btn" onClick={() => handleVote(true)} />
           <span>{score}</span>
-          <button className="minus-btn" onClick={() => handleVote(false)} />
+          <button aria-label="minus button" className="minus-btn" onClick={() => handleVote(false)} />
         </div>
         <div className={`action${isUpdating ? ' isUpdating' : ' hidden'}`}>
-          <button className="update-comment-btn" onClick={handleUpdate}>UPDATE</button>
+          <button aria-label="update button" className="update-comment-btn" onClick={handleUpdate}>UPDATE</button>
         </div>
 
         <div className={`action${isUpdating ? ' hidden-mobile' : ''}`}>
           {
             currentUser !== user?.username ?
-              <button className="reply-btn" onClick={handleReplyClick}><i className="reply-icon"></i> Reply</button> :
+              <button aria-label="reply button" className="reply-btn" onClick={handleReplyClick}><i className="reply-icon"></i> Reply</button> :
               <>
-                <button className="delete-btn" onClick={handleClickDelete}><i className="delete-icon"></i>Delete</button>
-                <button className="edit-btn" onClick={() => setIsUpdating(!isUpdating)}><i className="edit-icon"></i>Edit</button>
+                <button aria-label="delete button" className="delete-btn" onClick={handleClickDelete}><i className="delete-icon"></i>Delete</button>
+                <button aria-label="edit button" className="edit-btn" onClick={() => setIsUpdating(!isUpdating)}><i className="edit-icon"></i>Edit</button>
               </>
           }
         </div>

@@ -21,7 +21,7 @@ function getAvatarSrc(username: string): string {
 
 function Avatar({ username }: { username: string }) {
   const imgSrc = getAvatarSrc(username)
-  return <img className="avatar" src={imgSrc} />
+  return <img className="avatar" src={imgSrc} alt="avatar image" />
 
 }
 

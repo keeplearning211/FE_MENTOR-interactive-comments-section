@@ -103,8 +103,8 @@ const DeleteConfirmModal = ({ title, message, onConfirm, onClose, isOpen }: Conf
         <h1 className="title">{title}</h1>
         <p className="content">{message}</p>
         <div className="action">
-          <button ref={cancelBtnRef} className="cancel-btn" onClick={handleClose}>NO, CANCEL</button>
-          <button ref={confirmBtnRef} className="delete-confirm-btn" onClick={handleConfirm}> YES, DELETE</button>
+          <button aria-label="cancel button" ref={cancelBtnRef} className="cancel-btn" onClick={handleClose}>NO, CANCEL</button>
+          <button aria-label="delete confirm button" ref={confirmBtnRef} className="delete-confirm-btn" onClick={handleConfirm}> YES, DELETE</button>
         </div>
       </div>
     </div>
